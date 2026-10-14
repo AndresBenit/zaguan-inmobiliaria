@@ -10,7 +10,9 @@ const DESTACADOS = ["rosales-penthouse", "chico-navarra", "chia-campestre", "usa
 );
 const DURACION = 6500;
 
-export default function HeroSlides({ onOpen }: { onOpen: (i: Inmueble) => void }) {
+// La portada completa: fotos de fondo + título (children) y ficha del destacado en flujo normal,
+// para que nunca se monten en pantallas bajas (la sección crece en vez de encimarse)
+export default function HeroSlides({ onOpen, children }: { onOpen: (i: Inmueble) => void; children: React.ReactNode }) {
   const [n, setN] = useState(0);
   const [pausa, setPausa] = useState(false);
   const inicio = useRef(0);
@@ -46,7 +48,8 @@ export default function HeroSlides({ onOpen }: { onOpen: (i: Inmueble) => void }
   const i = DESTACADOS[n];
 
   return (
-    <div className="absolute inset-0" onMouseEnter={() => setPausa(true)} onMouseLeave={() => setPausa(false)}>
+    <div className="relative" onMouseEnter={() => setPausa(true)} onMouseLeave={() => setPausa(false)}>
+      <div className="absolute inset-0">
       {DESTACADOS.map((d, k) => (
         <div
           key={d.id}
@@ -66,8 +69,12 @@ export default function HeroSlides({ onOpen }: { onOpen: (i: Inmueble) => void }
       <div className="absolute inset-0 bg-[linear-gradient(180deg,rgb(0_0_0/0.55)_0%,rgb(0_0_0/0.12)_30%,rgb(0_0_0/0.25)_55%,rgb(0_0_0/0.8)_100%)]" />
       <div className="absolute inset-0 bg-[linear-gradient(90deg,rgb(0_0_0/0.45)_0%,transparent_65%)]" />
 
+      </div>
+
+      <div className="gutter relative mx-auto flex min-h-[92svh] max-w-[1440px] flex-col justify-between gap-10 pb-32 pt-[104px] text-white sm:pb-36 sm:pt-[132px]">
+        {children}
       {/* Ficha corta del destacado y controles */}
-      <div className="gutter absolute inset-x-0 bottom-32 mx-auto flex max-w-[1440px] flex-col gap-5 text-white sm:bottom-36 md:flex-row md:items-end md:justify-between">
+      <div className="flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
         <div key={i.id} className="slide-in max-w-[560px]">
           <p className="text-[14px] font-medium text-white/80">
             Destacado · {i.op === "venta" ? "Venta" : "Arriendo"} · {i.barrio}
@@ -111,6 +118,7 @@ export default function HeroSlides({ onOpen }: { onOpen: (i: Inmueble) => void }
             </button>
           </div>
         </div>
+      </div>
       </div>
     </div>
   );

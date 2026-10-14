@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { gsap, useGSAP, MOTION_OK } from "@/lib/gsap";
-import { wa } from "@/lib/site";
+import { SITE_URL, wa } from "@/lib/site";
 import { cop, inmuebles, zonas, precioCorto, type Inmueble, type Op } from "./data";
 import Ficha from "./Ficha";
 import Calculadora from "./Calculadora";
@@ -277,16 +277,17 @@ export default function Zaguan() {
 
       {/* Hero */}
       <section data-hero className="relative">
-        <div className="relative h-[92svh] min-h-[640px] overflow-hidden bg-oscuro" data-hide>
-          <HeroSlides onOpen={setAbierto} />
-          <div className="gutter pointer-events-none relative mx-auto max-w-[1440px] pt-[120px] text-white sm:pt-[132px]">
-            <p data-hide data-fade className="text-[15px] font-medium text-white/85">
-              Venta y arriendo de vivienda en Bogotá y la Sabana
-            </p>
-            <h1 data-hide data-fade className="display mt-3 max-w-[760px] text-[clamp(34px,4.3vw,62px)] leading-[1.04]">
-              Compre o arriende con un asesor a su lado, de la primera visita a la entrega de llaves.
-            </h1>
-          </div>
+        <div className="relative overflow-hidden bg-oscuro" data-hide>
+          <HeroSlides onOpen={setAbierto}>
+            <div className="pointer-events-none">
+              <p data-hide data-fade className="text-[15px] font-medium text-white/85">
+                Venta y arriendo de vivienda en Bogotá y la Sabana
+              </p>
+              <h1 data-hide data-fade className="display mt-3 max-w-[760px] text-[clamp(30px,4.3vw,62px)] leading-[1.05]">
+                Compre o arriende con un asesor a su lado, de la primera visita a la entrega de llaves.
+              </h1>
+            </div>
+          </HeroSlides>
         </div>
 
         {/* Buscador */}
@@ -772,6 +773,9 @@ export default function Zaguan() {
           <p>
             <span className="block text-white">Aviso</span>
             Zaguán es un negocio ficticio. Inmuebles, precios y personas son de ejemplo.
+            <a href={SITE_URL} className="mt-2 block text-white underline underline-offset-4">
+              Proyecto concepto hecho por Andrés Benítez
+            </a>
           </p>
         </div>
       </footer>
