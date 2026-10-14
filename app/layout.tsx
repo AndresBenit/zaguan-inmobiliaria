@@ -1,11 +1,13 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Schibsted_Grotesk } from "next/font/google";
+import { Inter } from "next/font/google";
+import localFont from "next/font/local";
 import ConceptBadge from "./_components/ConceptBadge";
 import SmoothScroll from "@/components/SmoothScroll";
 import "./globals.css";
 
 const inter = Inter({ variable: "--font-inter", subsets: ["latin"] });
-const schibsted = Schibsted_Grotesk({ variable: "--font-schibsted", subsets: ["latin"], weight: ["500", "600", "700"] });
+// Schibsted Grotesk (OFL) guardada en el proyecto: next/font/google no la resolvía al compilar en Vercel
+const schibsted = localFont({ src: "./fonts/schibsted-grotesk.woff2", variable: "--font-schibsted", weight: "400 900", display: "swap" });
 
 const title = "Zaguán Propiedad Raíz · Comprar y arrendar en Bogotá (proyecto concepto)";
 const description =
