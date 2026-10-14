@@ -1,0 +1,220 @@
+@layer theme, base, components, site, utilities;
+@import "tailwindcss";
+
+:root {
+  --fondo: #ffffff;
+  --suave: #f3f3f0; /* secciones y campos */
+  --tinta: #141414;
+  --gris: #6b6b66;
+  --linea: #e2e2dd;
+  --marca: #123d2f; /* verde Zaguán */
+  --marca-hondo: #0b2a20;
+  --marca-claro: #9cc5ae;
+  --oscuro: #141414;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@theme inline {
+  --color-fondo: var(--fondo);
+  --color-suave: var(--suave);
+  --color-tinta: var(--tinta);
+  --color-gris: var(--gris);
+  --color-linea: var(--linea);
+  --color-marca: var(--marca);
+  --color-marca-hondo: var(--marca-hondo);
+  --color-marca-claro: var(--marca-claro);
+  --color-oscuro: var(--oscuro);
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-schibsted), var(--font-inter), sans-serif;
+}
+
+html {
+  background: var(--fondo);
+  color: var(--tinta);
+}
+
+body {
+  background: var(--fondo);
+  color: var(--tinta);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.55;
+  overflow-x: clip;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--marca);
+  color: #fff;
+}
+
+:focus-visible {
+  outline: 2px solid var(--marca);
+  outline-offset: 3px;
+}
+
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+@layer site {
+  .gutter {
+    padding-inline: clamp(16px, 3.6vw, 56px);
+  }
+  /* Titulares: grotesca editorial, peso medio, interletra cerrada */
+  .display {
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: -0.03em;
+  }
+  .etiqueta {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--gris);
+  }
+  .campo {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1.5 6 6l5-4.5' stroke='%236b6b66' stroke-width='1.6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    padding-right: 38px;
+  }
+  .rango {
+    appearance: none;
+    height: 4px;
+    border-radius: 99px;
+    background: linear-gradient(to right, var(--marca) var(--p, 50%), var(--linea) var(--p, 50%));
+  }
+  .rango::-webkit-slider-thumb {
+    appearance: none;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: #fff;
+    border: 2px solid var(--marca);
+    box-shadow: 0 2px 8px rgb(0 0 0 / 0.18);
+    cursor: grab;
+  }
+  .rango::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #fff;
+    border: 2px solid var(--marca);
+    cursor: grab;
+  }
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Ficha del inmueble: hoja que sube en el celular, panel centrado en escritorio */
+.ficha-root {
+  pointer-events: none;
+}
+.ficha-root[data-open="true"] {
+  pointer-events: auto;
+}
+.ficha-fondo {
+  opacity: 0;
+  transition: opacity 0.45s cubic-bezier(0.32, 0.72, 0, 1);
+}
+.ficha-root[data-open="true"] .ficha-fondo {
+  opacity: 1;
+}
+.ficha-panel {
+  transform: translate3d(0, 100%, 0);
+  transition: transform 0.5s cubic-bezier(0.32, 0.72, 0, 1);
+}
+.ficha-root[data-open="true"] .ficha-panel {
+  transform: none;
+}
+@media (min-width: 900px) {
+  .ficha-panel {
+    opacity: 0;
+    transform: translate3d(0, 28px, 0) scale(0.985);
+    transition:
+      transform 0.65s cubic-bezier(0.16, 1, 0.3, 1),
+      opacity 0.3s ease;
+  }
+  .ficha-root[data-open="true"] .ficha-panel {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+html.js-motion [data-hide] {
+  visibility: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
+
+/* Portada: zoom lento sobre la foto activa */
+@keyframes kenburns {
+  from { transform: scale(1.02); }
+  to { transform: scale(1.12) translate3d(-1.5%, -1%, 0); }
+}
+.kenburns {
+  animation: kenburns 9s linear both;
+}
+@keyframes slide-in {
+  from { opacity: 0; transform: translate3d(0, 14px, 0); }
+  to { opacity: 1; transform: none; }
+}
+.slide-in {
+  animation: slide-in 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Pines de precio del mapa */
+.pin {
+  position: absolute;
+  transform: translate(-50%, -100%);
+  display: inline-block;
+  white-space: nowrap;
+  padding: 6px 10px;
+  border-radius: 6px;
+  background: #fff;
+  color: var(--tinta);
+  font: 600 13px/1 var(--font-sans);
+  box-shadow: 0 4px 14px rgb(0 0 0 / 0.22);
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, transform 0.2s;
+}
+.pin::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -5px;
+  width: 10px;
+  height: 10px;
+  background: inherit;
+  transform: translateX(-50%) rotate(45deg);
+  border-radius: 1px;
+}
+.pin:hover,
+.pin-on {
+  background: var(--marca);
+  color: #fff;
+  transform: translate(-50%, -100%) scale(1.06);
+}
+.leaflet-container {
+  font-family: var(--font-sans);
+}
+/* Mapa en tonos apagados para que los precios resalten */
+.leaflet-tile-pane {
+  filter: grayscale(0.85) contrast(1.05) brightness(1.04);
+}
